@@ -30,14 +30,15 @@ def roteamento_distribuido(grafo, rank, tamanho):
 
     # Enviar e receber atualizações de distância
     for _ in range(tamanho - 1):  # Iterar até convergir
-        for vizinho, _ in grafo[rank]:
+        for vizinho, _ in grafo[rank]: # Para cada vizinho do nó atual
             comm.send(distancias, dest=vizinho) # O vetor de distâncias atual do nó (processo) é enviado para o nó vizinho
-            vizinho_distancias = comm.recv(source=vizinho)
+            vizinho_distancias = comm.recv(source=vizinho) # Recebe o vetor de distâncias do nó vizinho
 
             # Atualizar vetor de distâncias
-            for no, distancia in vizinho_distancias.items():
+            for no, distancia in vizinho_distancias.items(): # Para cada nó e sua distância no vetor recebido
                 if distancias[no] > distancias[vizinho] + distancia:
                     distancias[no] = distancias[vizinho] + distancia
+                    print(f"Processo {rank}, atualizando distancia do no {rank} ao {no} para {distancias[no]}")
 
     return distancias
 
@@ -45,4 +46,4 @@ def roteamento_distribuido(grafo, rank, tamanho):
 if __name__ == "__main__":
     if rank in grafo:
         resultado = roteamento_distribuido(grafo, rank, tamanho)
-        print(f"Processo {rank}, vetor de distancias: {resultado}")
+        print(f"Processo {rank}, vetor de distancias: {resultado}\n")
