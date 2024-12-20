@@ -47,3 +47,5 @@ if __name__ == "__main__":
     if rank in grafo:
         resultado = roteamento_distribuido(grafo, rank, tamanho)
         print(f"Processo {rank}, vetor de distancias: {resultado}\n")
+
+# Coisa nova: Para executar o código, você precisa usar o comando mpirun -n 4 python distributed_routing.py
